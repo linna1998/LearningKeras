@@ -1,3 +1,6 @@
+ # Learning from https://morvanzhou.github.io/tutorials/machine-learning/keras/
+ # Linna 2017.11.1
+
  # Keras regressior 
 import numpy as np
 np.random.seed(1337)  # For reproducibility
@@ -26,10 +29,23 @@ model.add(Dense(output_dim=1, input_dim=1))
 # Choose the loss function and optimizing method
 model.compile(loss='mse', optimizer='sgd')
 
-# Training the model
+# Train the model
 print('Training-------')
 for step in range(301):
     cost = model.train_on_batch(X_train, Y_train)
     # After 100 steps, print the train cost out
     if step % 100 == 0:
         print('train cost', cost)
+
+# Test the model
+print('Testing-------')
+cost = model.evaluate(X_test, Y_test, batch_size=40)
+print('test cost:', cost)
+W, b = model.layers[0].get_weights()
+print('Weights=', W, '\nbiases=', b)
+
+# Plot the prediction
+Y_pred = model.predict(X_test)
+plt.scatter(X_test, Y_test)
+plt.plot(X_test, Y_pred)
+plt.show()
